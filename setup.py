@@ -53,7 +53,7 @@ setup(
     ],
     license="LGPL 3",
     keywords="django,multiple,select,field,choices",
-    url='https://github.com/goinnn/django-multiselectfield',
+    url='https://github.com/takuyozora/django-multiselectfield',
     packages=find_packages(),
     include_package_data=True,
     tests_require=[
