@@ -2,3 +2,5 @@ include README.rst
 include CHANGES.rst
 include COPYING.LGPLv3
 include multiselectfield/locale/*/LC_MESSAGES/*.*
+include multiselectfield/static/*
+include multiselectfield/templates/*
