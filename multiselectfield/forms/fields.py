@@ -20,6 +20,40 @@ from ..utils import MSFList, get_max_length
 from ..validators import MaxValueMultiFieldValidator, MinChoicesValidator, MaxChoicesValidator
 
 
+class CheckboxSelectMultipleSorted(forms.widgets.CheckboxSelectMultiple):
+    allow_multiple_selected = True
+    input_type = 'checkbox'
+    template_name = 'multiselectfield/multi_sorted.html'
+    option_template_name = 'django/forms/widgets/checkbox_option.html'
+
+    class Media:
+        js = (
+            'multiselectfield/widget.js',
+        )
+
+    @staticmethod
+    def get_sort_key(arr, val):
+        try:
+            return arr.index(str(val))
+        except ValueError:
+            # Keys not selected should be present at bottom
+            return len(arr)
+
+    def optgroups(self, name, value, attrs=None):
+        groups = super(CheckboxSelectMultipleSorted, self).optgroups(name, value, attrs=attrs)
+
+        # No grouping
+        if groups[0][0] is None:
+            # Sort the options placing the selected options on top.
+            groups.sort(key = lambda x: CheckboxSelectMultipleSorted.get_sort_key(value, x[1][0]['value']))
+        else:
+            for optGroup in groups:
+                # Sort the options placing the selected options on top.
+                optGroup[1].sort(key = lambda x: CheckboxSelectMultipleSorted.get_sort_key(value, x['value']))
+
+        return groups
+
+
 class MultiSelectFormField(forms.MultipleChoiceField):
     widget = forms.CheckboxSelectMultiple
 
